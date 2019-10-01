@@ -1,3 +1,12 @@
 .register-form {
   padding: 1rem;
+  margin: auto;
+  padding: 40px;
+  margin-top: 10%;
+  width: 400px;
+}
+.form-label {
+  display: flex;
+  flex-direction: column;
+
 }
