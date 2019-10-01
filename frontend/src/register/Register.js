@@ -87,7 +87,7 @@ class RegistrationForm extends React.Component {
       }
     };
     return (
-      <div className="register-form">
+      <div className="register-form ">
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="E-mail" className="form-label">
             {getFieldDecorator("email", {
@@ -175,7 +175,7 @@ class RegistrationForm extends React.Component {
               ]
             })(<Input />)}
           </Form.Item>
-          <Form.Item className="form-label" {...tailFormItemLayout}>
+          <Form.Item className="form-label agreement" {...tailFormItemLayout}>
             {getFieldDecorator("agreement", {
               valuePropName: "checked"
             })(
@@ -184,7 +184,7 @@ class RegistrationForm extends React.Component {
               </Checkbox>
             )}
           </Form.Item>
-          <Form.Item className="form-label" {...tailFormItemLayout}>
+          <Form.Item className="form-label agreement" {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
               Register
             </Button>

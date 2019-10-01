@@ -1,12 +1,30 @@
 .register-form {
   padding: 1rem;
   margin: auto;
-  padding: 40px;
-  margin-top: 10%;
-  width: 400px;
+  padding: 40px 80px;
+  margin-top: 5%;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ebedf0;
+  border-radius: 5px;
+  align-content: center;
 }
 .form-label {
   display: flex;
+  align-items: center;
   flex-direction: column;
+}
 
+.agreement {
+  align-items: flex-end;
+  width: 100%;
+}
+
+.form-label > div {
+  width: 100%;
+}
+
+label {
+  float: left;
 }
