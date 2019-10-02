@@ -2,24 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 // import './index.css';
 import App from "./App";
+
 import Login from "./login/Login.js";
 import Register from "./register/Register.js";
 import Dashboard from "./Dashboard/Dashboard";
+
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 ReactDOM.render(
   <Router>
-    <nav>
-      <Link style={{ margin: ".5rem" }} to="/login">
-        Login
-      </Link>
-      <Link style={{ margin: ".5rem" }} to="/register">
-        Register
-      </Link>
-
-      <Link to="/">Home</Link>
-    </nav>
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
