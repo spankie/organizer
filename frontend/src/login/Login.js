@@ -1,6 +1,7 @@
 import React from "react";
 import "./Login.css";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Link } from "react-router-dom";
 
 function NormalLoginForm(props) {
   const handleSubmit = e => {
@@ -9,6 +10,8 @@ function NormalLoginForm(props) {
       if (!err) {
         console.log("Received values of form: ", values);
       }
+      props.history.push("/dashboard", {});
+      console.log(props);
     });
   };
 
@@ -61,7 +64,7 @@ function NormalLoginForm(props) {
             >
               Log in
             </Button>
-            Or <a href="#!">register now!</a>
+            Or <Link to="/register">register now!</Link>
           </Form.Item>
         </Form>
       </div>
