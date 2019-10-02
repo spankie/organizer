@@ -11,6 +11,7 @@ import {
   Checkbox,
   Button
 } from "antd";
+import { Link } from "react-router-dom";
 
 class RegistrationForm extends React.Component {
   state = {
@@ -89,6 +90,27 @@ class RegistrationForm extends React.Component {
     return (
       <div className="register-form ">
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+        <Form.Item
+            className="form-label"
+            label={
+              <span>
+                Full Name&nbsp;
+                <Tooltip title="What do you want us to call you?">
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+              </span>
+            }
+          >
+            {getFieldDecorator("fullname", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your full name!",
+                  whitespace: true
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
           <Form.Item label="E-mail" className="form-label">
             {getFieldDecorator("email", {
               rules: [
@@ -137,27 +159,6 @@ class RegistrationForm extends React.Component {
             className="form-label"
             label={
               <span>
-                Full Name&nbsp;
-                <Tooltip title="What do you want us to call you?">
-                  <Icon type="question-circle-o" />
-                </Tooltip>
-              </span>
-            }
-          >
-            {getFieldDecorator("fullname", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input your full name!",
-                  whitespace: true
-                }
-              ]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item
-            className="form-label"
-            label={
-              <span>
                 Organization Name&nbsp;
                 <Tooltip title="What is the name of your organization?">
                   <Icon type="question-circle-o" />
@@ -189,6 +190,7 @@ class RegistrationForm extends React.Component {
               Register
             </Button>
           </Form.Item>
+            Or <Link to="/login">Login here</Link>
         </Form>
       </div>
     );
