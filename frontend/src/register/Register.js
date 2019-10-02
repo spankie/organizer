@@ -189,6 +189,8 @@ class RegistrationForm extends React.Component {
             <Button type="primary" htmlType="submit">
               Register
             </Button>
+            <br />
+            Or <a href="/login">Login!</a>
           </Form.Item>
             Or <Link to="/login">Login here</Link>
         </Form>
