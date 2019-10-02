@@ -19,23 +19,27 @@ function Dashboard() {
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
             <Icon type="pie-chart" />
-            <span>Option 1</span>
+            <span>Dashboard</span>
           </Menu.Item>
           <SubMenu
-            key="sub2"
+            key="2"
             title={
               <span>
                 <Icon type="team" />
-                <span>Team</span>
+                <span>Organization</span>
               </span>
             }
           >
-            <Menu.Item key="6">Team 1</Menu.Item>
-            <Menu.Item key="8">Team 2</Menu.Item>
+            <Menu.Item key="8">New User</Menu.Item>
+            <Menu.Item key="6">View Users</Menu.Item>
           </SubMenu>
-          <Menu.Item key="9">
+          <Menu.Item key="3">
+            <Icon type="pie-chart" />
+            <span>Settings</span>
+          </Menu.Item>
+          <Menu.Item key="4">
             <Icon type="file" />
-            <span>File</span>
+            <span>Logout</span>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -43,15 +47,15 @@ function Dashboard() {
         <Header style={{ background: "#fff", padding: 0 }} />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
             Bill is a cat.
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
+          ©2018 Created by Spankie
         </Footer>
       </Layout>
     </Layout>
