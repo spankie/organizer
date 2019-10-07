@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Route, Link } from "react-router-dom";
+import { Layout, Menu, Breadcrumb, Icon, Avatar } from "antd";
 
 import AddUser from "../components/adduser/AddUser";
 import ListUsers from "../components/listusers/Listuser";
@@ -8,8 +9,6 @@ import ChangePassword from "../components/changepassword/ChangePassword";
 import "./Dashboard.css";
 import styled from "styled-components";
 
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
-import { Avatar } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
 function Dashboard() {
@@ -56,27 +55,19 @@ function Dashboard() {
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
             <Icon type="home" />
-            <span>
               <Link to="/dashboard/">Organization</Link>
-            </span>
           </Menu.Item>
           <Menu.Item key="2">
             <Icon type="user-add" />
-            <span>
               <Link to="/dashboard/adduser">Add User</Link>
-            </span>
           </Menu.Item>
           <Menu.Item key="3">
             <Icon type="usergroup-add" />
-            <span>
               <Link to="/dashboard/listuser">List User</Link>
-            </span>
           </Menu.Item>
           <Menu.Item key="4">
             <Icon type="setting" />
-            <span>
               <Link to="/dashboard/settings">Change Password</Link>
-            </span>
           </Menu.Item>
           <Menu.Item key="5">
             <Icon type="poweroff" />
