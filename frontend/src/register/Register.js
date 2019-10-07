@@ -190,9 +190,8 @@ class RegistrationForm extends React.Component {
               Register
             </Button>
             <br />
-            Or <a href="/login">Login!</a>
           </Form.Item>
-            Or <Link to="/login">Login here</Link>
+            Or <Link to="/login" style={{color: "#1890ff"}}>Login here</Link>
         </Form>
       </div>
     );
