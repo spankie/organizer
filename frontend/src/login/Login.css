@@ -29,7 +29,7 @@
   .container {
     padding: 20px;
     margin: auto;
-    width: 400px;
+    width: 100%;
     border-radius: 5px;
     height: 60vh;
     margin-top: 10%;
