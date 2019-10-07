@@ -28,3 +28,9 @@
 label {
   float: left;
 }
+
+@media screen and (max-width: 640px) {
+  .register-form {
+    width: 100%;
+  }
+}
