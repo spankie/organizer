@@ -1,25 +1,19 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Button } from "antd";
+import {Link} from "react-router-dom";
+import { Button, Icon} from "antd";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/*<img src={logo} className="App-logo" alt="logo" />*/}
+        <Icon type="home" style={{fontSize: "8rem"}} />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <code>Manage your organizations</code> 
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Button>Hello there</Button>
+        <Button type="primary"><Link to="/register">Get Started</Link></Button>
       </header>
     </div>
   );
