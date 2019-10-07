@@ -64,7 +64,7 @@ function NormalLoginForm(props) {
             >
               Log in
             </Button>
-            Or <Link to="/register">register now!</Link>
+            Or <Link to="/register" style={{color: "#1890ff"}}>register now!</Link>
           </Form.Item>
         </Form>
       </div>
