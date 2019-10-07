@@ -1,8 +1,11 @@
 package controllers
 
 import (
-	"github.com/spankie/organizer/models"
 	"encoding/json"
+	"log"
+	"net/http"
+
+	"github.com/spankie/organizer/models"
 
 	"github.com/astaxie/beego"
 )
@@ -21,8 +24,14 @@ type UserController struct {
 func (u *UserController) Post() {
 	var user models.User
 	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-	uid := models.AddUser(user)
-	u.Data["json"] = map[string]string{"uid": uid}
+	errs := models.AddUser(user)
+	if len(errs) > 0 {
+		log.Println(errs)
+		u.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		u.Data["json"] = map[string]interface{}{"error": errs}
+	} else {
+		u.Data["json"] = map[string]interface{}{"message": "User created successfully"}
+	}
 	u.ServeJSON()
 }
 
@@ -33,6 +42,8 @@ func (u *UserController) Post() {
 func (u *UserController) GetAll() {
 	users := models.GetAllUsers()
 	u.Data["json"] = users
+	// u.Data["json"] = struct{ name string }{name: "spankie"}
+	log.Println(u)
 	u.ServeJSON()
 }
 
@@ -100,10 +111,12 @@ func (u *UserController) Delete() {
 func (u *UserController) Login() {
 	username := u.GetString("username")
 	password := u.GetString("password")
-	if models.Login(username, password) {
-		u.Data["json"] = "login success"
-	} else {
+	token, errs := models.Login(username, password)
+	if len(errs) > 0 {
+		u.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
 		u.Data["json"] = "user not exist"
+	} else {
+		u.Data["json"] = map[string]string{"token": token, "message": "Login Successful"}
 	}
 	u.ServeJSON()
 }
@@ -116,4 +129,3 @@ func (u *UserController) Logout() {
 	u.Data["json"] = "logout success"
 	u.ServeJSON()
 }
-
