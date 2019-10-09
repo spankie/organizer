@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/spankie/organizer/models"
 
 	"github.com/astaxie/beego"
@@ -23,14 +25,38 @@ type UserController struct {
 // @router / [post]
 func (u *UserController) Post() {
 	var user models.User
-	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-	errs := models.AddUser(user)
-	if len(errs) > 0 {
-		log.Println(errs)
-		u.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
-		u.Data["json"] = map[string]interface{}{"error": errs}
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+	if err != nil {
+		log.Printf("Unmarshal user error: %v\n", err)
+		SendJSONResponse(&u.Controller, RespData{"error": "Bad Request"}, http.StatusBadRequest)
+		u.ServeJSON()
+		return
+	}
+	prevUser, err := models.GetUser("email", user.Email)
+	if err == nil {
+		SendJSONResponse(&u.Controller, RespData{"error": "user with email already exists"}, http.StatusBadRequest)
+		u.ServeJSON()
+		return
 	} else {
-		u.Data["json"] = map[string]interface{}{"message": "User created successfully"}
+		log.Printf("Previous user error: %v", err)
+		log.Printf("Prevuser: %v", prevUser)
+	}
+	// hashpassword here
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Printf("Encrypt password error: %v\n", err)
+		SendJSONResponse(&u.Controller, RespData{"error": http.StatusText(http.StatusInternalServerError)}, http.StatusInternalServerError)
+		u.ServeJSON()
+		return
+	}
+	user.Password = string(hashedPassword)
+	// log.Printf("user: %v\n", user)
+	errs := models.AddUser(&user)
+	if len(errs) > 0 {
+		log.Printf("Create User errors: %v\n", errs)
+		SendJSONResponse(&u.Controller, RespData{"error": errs}, http.StatusBadRequest)
+	} else {
+		SendJSONResponse(&u.Controller, RespData{"message": "User created successfully"}, http.StatusCreated)
 	}
 	u.ServeJSON()
 }
@@ -56,7 +82,7 @@ func (u *UserController) GetAll() {
 func (u *UserController) Get() {
 	uid := u.GetString(":uid")
 	if uid != "" {
-		user, err := models.GetUser(uid)
+		user, err := models.GetUser("id", uid)
 		if err != nil {
 			u.Data["json"] = err.Error()
 		} else {
@@ -103,20 +129,26 @@ func (u *UserController) Delete() {
 
 // @Title Login
 // @Description Logs user into the system
-// @Param	username		query 	string	true		"The username for login"
-// @Param	password		query 	string	true		"The password for login"
+// @Param	email		body 	*string	true		"email for user login"
+// @Param	password		body 	*string	true		"password for user login"
 // @Success 200 {string} login success
-// @Failure 403 user not exist
-// @router /login [get]
+// @Failure 400 user not exist
+// @router /login [post]
 func (u *UserController) Login() {
-	username := u.GetString("username")
-	password := u.GetString("password")
-	token, errs := models.Login(username, password)
+	req := struct {
+		Email    string `form:"email"`
+		Password string `form:"password"`
+	}{}
+	if err := json.Unmarshal(u.Ctx.Input.RequestBody, &req); err != nil {
+		log.Printf("ParseForm error: %v", err)
+		SendJSONResponse(&u.Controller, RespData{"error": "user not exist"}, http.StatusBadRequest)
+	}
+	log.Printf("Login request: %v\n", req)
+	token, errs := models.Login(req.Email, req.Password)
 	if len(errs) > 0 {
-		u.Ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
-		u.Data["json"] = "user not exist"
+		SendJSONResponse(&u.Controller, RespData{"error": "user not exist"}, http.StatusBadRequest)
 	} else {
-		u.Data["json"] = map[string]string{"token": token, "message": "Login Successful"}
+		SendJSONResponse(&u.Controller, RespData{"token": token, "message": "Login Successful"}, http.StatusOK)
 	}
 	u.ServeJSON()
 }
