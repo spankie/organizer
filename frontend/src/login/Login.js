@@ -1,16 +1,36 @@
 import React from "react";
 import "./Login.css";
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import { Form, Icon, Input, Button, Checkbox, message } from "antd";
+import localforage from "localforage";
 import { Link } from "react-router-dom";
+import Axios from "axios";
 
 function NormalLoginForm(props) {
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-      props.history.push("/dashboard", {});
+      if (err) return
+      Axios.post("http://localhost:8080/v1/user/login", values)
+      .then(res => {
+        console.log(res);
+        message.success(res.data.message);
+        // save the token here to localstorage.
+        if (res.data.token) {
+          localforage.setItem("token", res.data.token).then(token => {
+            console.log(token);
+            localforage.setItem("user", res.data.user);
+            props.history.push("/dashboard", {});
+          });
+        } else {
+          message.error("Could not log you in. Please try again.");
+        }
+      }).catch(err => {
+        console.log(err);
+      }).finally(()=> {
+        // do something here...
+      });
+      console.log("Received values of form: ", values);
+
       console.log(props);
     });
   };
@@ -21,16 +41,16 @@ function NormalLoginForm(props) {
       <div className="login-form">
         <Form onSubmit={handleSubmit}>
           <Form.Item>
-            {getFieldDecorator("username", {
+            {getFieldDecorator("email", {
               rules: [
-                { required: true, message: "Please input your username!" }
+                { required: true, message: "Please input your email!" }
               ]
             })(
               <Input
                 prefix={
                   <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                 }
-                placeholder="Username"
+                placeholder="Email"
               />
             )}
           </Form.Item>
