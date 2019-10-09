@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -22,47 +23,35 @@ func init() {
 		Password: "password",
 		Gender:   "male",
 		FullName: "Spankie Dee",
-		Age:      20,
-		Address:  "Singapore",
-		Email:    "spankie@gmail.com",
+		// Age:      20,
+		Address: "Singapore",
+		Email:   "spankie@gmail.com",
 	}
 	UserList["user_11111"] = &u
 }
 
 type User struct {
 	gorm.Model
-	Password       string       `json:"password"`
-	Gender         string       `json:"gender"`
-	FullName       string       `json:"full_name"`
-	Age            int          `json:"age"`
+	Password string `json:"password"`
+	Gender   string `json:"gender"`
+	FullName string `json:"full_name"`
+	// Age            int          `json:"age"`
 	Address        string       `json:"address"`
 	Email          string       `json:"email"`
 	OrganizationID uint         `json:"organization_id"`
 	Organization   Organization `json:"organization" gorm:"foreignkey:OrganizationID"`
 }
 
-func AddUser(u User) []error {
-	err := DB.Create(&u).GetErrors()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-	return nil
-	// u.Id = strconv.FormatInt(time.Now().UnixNano(), 10)
-	// UserList[u.Id] = &u
-	// return u.Id
+func AddUser(u *User) []error {
+	return DB.Create(u).GetErrors()
 }
 
-func GetUser(uid string) (u *User, err error) {
+func GetUser(field string, value interface{}) (u *User, err error) {
 	u = &User{}
-	if err := DB.Where("id = ?", uid).First(u).Error; err != nil {
+	if err := DB.Where(fmt.Sprintf("%s = ?", field), value).First(u).Error; err != nil {
 		return nil, err
 	}
 	return u, nil
-	// if u, ok := UserList[uid]; ok {
-	// return u, nil
-	// }
-	// return nil, errors.New("User not exists")
 }
 
 func GetAllUsers() map[string]*User {
@@ -96,6 +85,7 @@ func UpdateUser(uid string, uu *User) (a *User, err error) {
 
 func Login(username, password string) (string, []error) {
 	u := &User{}
+	log.Printf("email: %s\npassword: %s\n", username, password)
 	errs := DB.Where("email = ?", username).First(u).GetErrors()
 	if len(errs) > 0 {
 		log.Println(errs)
