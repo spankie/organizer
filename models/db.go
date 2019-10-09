@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/astaxie/beego"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
