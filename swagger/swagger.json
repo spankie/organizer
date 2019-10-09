@@ -194,7 +194,7 @@
             }
         },
         "/user/login": {
-            "get": {
+            "post": {
                 "tags": [
                     "user"
                 ],
@@ -202,25 +202,29 @@
                 "operationId": "UserController.Login",
                 "parameters": [
                     {
-                        "in": "query",
-                        "name": "username",
-                        "description": "The username for login",
+                        "in": "body",
+                        "name": "email",
+                        "description": "email for user login",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "$ref": "#/definitions/*string"
+                        }
                     },
                     {
-                        "in": "query",
+                        "in": "body",
                         "name": "password",
-                        "description": "The password for login",
+                        "description": "password for user login",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "$ref": "#/definitions/*string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "{string} login success"
                     },
-                    "403": {
+                    "400": {
                         "description": "user not exist"
                     }
                 }
@@ -331,6 +335,10 @@
         }
     },
     "definitions": {
+        "*string": {
+            "title": "*string",
+            "type": "object"
+        },
         "gorm.Model": {
             "title": "Model",
             "type": "object"
@@ -351,16 +359,24 @@
                 }
             }
         },
+        "models.Organization": {
+            "title": "Organization",
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "title": "User",
             "type": "object",
             "properties": {
                 "address": {
                     "type": "string"
-                },
-                "age": {
-                    "type": "integer",
-                    "format": "int64"
                 },
                 "email": {
                     "type": "string"
@@ -370,6 +386,13 @@
                 },
                 "gender": {
                     "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/models.Organization"
+                },
+                "organization_id": {
+                    "type": "integer",
+                    "format": "int32"
                 },
                 "password": {
                     "type": "string"

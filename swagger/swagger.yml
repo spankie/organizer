@@ -188,26 +188,28 @@ paths:
         "403":
           description: uid is empty
   /user/login:
-    get:
+    post:
       tags:
       - user
       description: Logs user into the system
       operationId: UserController.Login
       parameters:
-      - in: query
-        name: username
-        description: The username for login
+      - in: body
+        name: email
+        description: email for user login
         required: true
-        type: string
-      - in: query
+        schema:
+          $ref: '#/definitions/*string'
+      - in: body
         name: password
-        description: The password for login
+        description: password for user login
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/*string'
       responses:
         "200":
           description: '{string} login success'
-        "403":
+        "400":
           description: user not exist
   /user/logout:
     get:
@@ -219,6 +221,9 @@ paths:
         "200":
           description: '{string} logout success'
 definitions:
+  '*string':
+    title: '*string'
+    type: object
   gorm.Model:
     title: Model
     type: object
@@ -233,21 +238,31 @@ definitions:
       Score:
         type: integer
         format: int64
+  models.Organization:
+    title: Organization
+    type: object
+    properties:
+      address:
+        type: string
+      name:
+        type: string
   models.User:
     title: User
     type: object
     properties:
       address:
         type: string
-      age:
-        type: integer
-        format: int64
       email:
         type: string
       full_name:
         type: string
       gender:
         type: string
+      organization:
+        $ref: '#/definitions/models.Organization'
+      organization_id:
+        type: integer
+        format: int32
       password:
         type: string
 tags:
