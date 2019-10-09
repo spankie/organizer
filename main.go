@@ -9,6 +9,7 @@ import (
 	_ "github.com/spankie/organizer/routers"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
@@ -30,7 +31,14 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"Origin", "Authorization", "content-type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
-	beego.Router("/api/user", &controllers.UserController{})
+	beego.Router("/user", &controllers.UserController{})
 	beego.Run()
 }
