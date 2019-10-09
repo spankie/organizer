@@ -6,12 +6,15 @@ import {
   Tooltip,
   Icon,
   // Cascader,
-  // Row,
-  // Col,
+  message,
+  Select,
   Checkbox,
   Button
 } from "antd";
+import axios from "axios";
 import { Link } from "react-router-dom";
+
+const { Option } = Select;
 
 class RegistrationForm extends React.Component {
   state = {
@@ -24,6 +27,15 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        axios.post("http://localhost:8080/v1/user", values)
+        .then(res => {
+          console.log(res);
+          message.success(res.data.message);
+        }).catch(err => {
+          console.log(err);
+        }).finally(()=>{
+          // clear the form or something here...
+        });
       }
     });
   };
@@ -159,6 +171,46 @@ class RegistrationForm extends React.Component {
             className="form-label"
             label={
               <span>
+                Address
+                {/* <Tooltip title="What your address?">
+                  <Icon type="question-circle-o" />
+                </Tooltip> */}
+              </span>
+            }
+          >
+            {getFieldDecorator("address", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your address!",
+                  whitespace: true
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item
+            className="form-label"
+            label={<span>Gender</span>}
+          >
+            {getFieldDecorator("gender", {
+              rules: [
+                {
+                  required: true,
+                  message: "Please select you gender!",
+                  whitespace: true
+                }
+              ]
+            })(
+            <Select style={{ width: 120 }} /*onChange={handleChange}*/>
+              <Option value="" selected disabled>Gender</Option>
+              <Option value="male">Male</Option>
+              <Option value="female">Femal</Option>
+            </Select>)}
+          </Form.Item>
+          {/*<Form.Item
+            className="form-label"
+            label={
+              <span>
                 Organization Name&nbsp;
                 <Tooltip title="What is the name of your organization?">
                   <Icon type="question-circle-o" />
@@ -175,13 +227,13 @@ class RegistrationForm extends React.Component {
                 }
               ]
             })(<Input />)}
-          </Form.Item>
+          </Form.Item>*/}
           <Form.Item className="form-label agreement" {...tailFormItemLayout}>
             {getFieldDecorator("agreement", {
               valuePropName: "checked"
             })(
               <Checkbox>
-                I have read the <a href="#!">agreement</a>
+                I have read the <Link to="#!">agreement</Link>
               </Checkbox>
             )}
           </Form.Item>
