@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from '../src/assets/images/logo.svg';
 import './App.css';
 import {Link} from "react-router-dom";
 import { Button, Icon} from "antd";
