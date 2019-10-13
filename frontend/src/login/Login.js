@@ -1,44 +1,46 @@
 import React from "react";
 import "./Login.css";
-import { Form, Icon, Input, Button, Checkbox, message } from "antd";
+import { Form, Icon, Input, Button, Checkbox, message, Row, Col, Divider } from "antd";
 import localforage from "localforage";
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import axios from "axios";
+import { ShowErrors } from "../components/common";
 
 function NormalLoginForm(props) {
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (err) return
-      Axios.post("http://localhost:8080/v1/user/login", values)
+      console.log(process.env);
+      axios.post(`http://localhost:8080/v1/user/login`, values)
       .then(res => {
         console.log(res);
         message.success(res.data.message);
         // save the token here to localstorage.
         if (res.data.token) {
-          localforage.setItem("token", res.data.token).then(token => {
-            console.log(token);
-            localforage.setItem("user", res.data.user);
+          res.data.user.token = res.data.token;
+          localforage.setItem("user", res.data.user).then(user => {
+            console.log(user);
             props.history.push("/dashboard", {});
           });
         } else {
           message.error("Could not log you in. Please try again.");
         }
-      }).catch(err => {
-        console.log(err);
-      }).finally(()=> {
+      }).catch(ShowErrors).finally(()=> {
         // do something here...
       });
       console.log("Received values of form: ", values);
 
-      console.log(props);
+      // console.log(props);
     });
   };
 
   const { getFieldDecorator } = props.form;
   return (
-    <section className="container">
-      <div className="login-form">
+    <Row>
+    <Col sm={{span:12, offset:6}} style={{padding: "2rem"}}>
+      <h1>Login here</h1>
+      <Divider/>
         <Form onSubmit={handleSubmit}>
           <Form.Item>
             {getFieldDecorator("email", {
@@ -87,8 +89,8 @@ function NormalLoginForm(props) {
             Or <Link to="/register" style={{color: "#1890ff"}}>register now!</Link>
           </Form.Item>
         </Form>
-      </div>
-    </section>
+      </Col>
+        </Row>
   );
 }
 
