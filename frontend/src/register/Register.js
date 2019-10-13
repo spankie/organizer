@@ -9,10 +9,13 @@ import {
   message,
   Select,
   Checkbox,
-  Button
+  Button,
+  Col,
+  Row,
 } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ShowErrors } from "../components/common";
 
 const { Option } = Select;
 
@@ -27,13 +30,11 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        axios.post("http://localhost:8080/v1/user", values)
+        axios.post(`http://localhost:8080/v1/user`, values)
         .then(res => {
           console.log(res);
           message.success(res.data.message);
-        }).catch(err => {
-          console.log(err);
-        }).finally(()=>{
+        }).catch(ShowErrors).finally(()=>{
           // clear the form or something here...
         });
       }
@@ -62,18 +63,6 @@ class RegistrationForm extends React.Component {
     callback();
   };
 
-  handleWebsiteChange = value => {
-    let autoCompleteResult;
-    if (!value) {
-      autoCompleteResult = [];
-    } else {
-      autoCompleteResult = [".com", ".org", ".net"].map(
-        domain => `${value}${domain}`
-      );
-    }
-    this.setState({ autoCompleteResult });
-  };
-
   render() {
     const { getFieldDecorator } = this.props.form;
 
@@ -100,7 +89,8 @@ class RegistrationForm extends React.Component {
       }
     };
     return (
-      <div className="register-form ">
+      <Row>
+        <Col sm={{span:12, offset:6}} style={{padding: "2rem"}}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item
             className="form-label"
@@ -245,7 +235,8 @@ class RegistrationForm extends React.Component {
           </Form.Item>
             Or <Link to="/login" style={{color: "#1890ff"}}>Login here</Link>
         </Form>
-      </div>
+      </Col>
+      </Row>
     );
   }
 }
