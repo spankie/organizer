@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Input, Form, Button } from "antd";
+import { Input, Form, Button, Divider, Select } from "antd";
 
 const User = styled.section`
   width: 100%;
@@ -16,31 +16,41 @@ const User = styled.section`
 `;
 
 function AddUser() {
+  const { Option } = Select;
   return (
-    <User>
-      <h4>Add New User</h4>
-      <Form>
-        <Form.Item style={{ width: "inherit !important" }}>
-          <Input placeholder="First name" />
-        </Form.Item>
-        <Form.Item>
-          <Input placeholder="Last name" />
-        </Form.Item>
-        <Form.Item>
-          <Input placeholder="Email" />
-        </Form.Item>
-        <Form.Item>
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        <Form.Item>
-          <Input.Password placeholder="Confirm Password" />
-        </Form.Item>
+    <>
+      <h2>Add New User</h2>
+      <Divider />
+      <User>
+        <Form>
+          <Form.Item>
+            <Select placeholder="Select Organization">
+              <Option value="male">Org 1</Option>
+              <Option value="female">Org 2</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item style={{ width: "inherit !important" }}>
+            <Input placeholder="First name" />
+          </Form.Item>
+          <Form.Item>
+            <Input placeholder="Last name" />
+          </Form.Item>
+          <Form.Item>
+            <Input placeholder="Email" />
+          </Form.Item>
+          <Form.Item>
+            <Input.Password placeholder="Password" />
+          </Form.Item>
+          <Form.Item>
+            <Input.Password placeholder="Confirm Password" />
+          </Form.Item>
 
-        <Button type="primary" block>
-          Add User
-        </Button>
-      </Form>
-    </User>
+          <Button type="primary" block>
+            Add User
+          </Button>
+        </Form>
+      </User>
+    </>
   );
 }
 
