@@ -3,7 +3,7 @@ import { Row, Col, Card } from "antd";
 
 function DashboardHome() {
   return (
-    <section className="ant-col ant-col-sm-8 ant-col-sm-offset-8">
+    <section>
       <h2>Cards</h2>
       <div style={{ background: "#ECECEC", padding: "30px" }}>
         <Row gutter={16}>
