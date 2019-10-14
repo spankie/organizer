@@ -94,7 +94,10 @@ class RegistrationForm extends React.Component {
     };
     return (
       <Row>
-        <Col sm={{ span: 12, offset: 6 }} style={{ padding: "2rem" }}>
+        <Col
+          className="ant-col ant-col-sm-10 ant-col-sm-offset-7"
+          style={{ padding: "2rem" }}
+        >
           <h2>Register</h2>
           <Divider />
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
